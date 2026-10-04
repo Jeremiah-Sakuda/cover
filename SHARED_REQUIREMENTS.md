@@ -1,42 +1,6 @@
-# Shared planning baseline (archived reference)
+# Shared hackathon planning requirements
 
-This is the original cross-project planning baseline. Cover implementation status and setup are in [README.md](README.md). Sibling projects have separate repositories.
-
-# PayPal AI Hackathon project suite
-
-**Date:** October 3, 2026. Three independent local builds are being developed from the proposal briefs below. Each project README documents its implemented scope, provider configuration, tests, and remaining release gates. No PayPal sandbox transaction or customer validation is claimed without recorded evidence.
-
-## Run the apps
-
-Requires Node.js 22 or later and npm. From this folder:
-
-```sh
-npm run setup
-npm run check
-npm start
-```
-
-`setup` installs each app's dependencies. `check` runs all tests and creates production builds. `start` runs all three built apps; Ctrl+C stops the suite. For development, use `npm run dev` after setup.
-
-While the built apps are running, `npm run smoke` checks that all three APIs and frontend bundles are being served.
-
-| App | Built app | Development UI | Setup and implementation |
-| --- | --- | --- | --- |
-| Harambee | http://localhost:3101 | http://localhost:5171 | [Harambee README](harambee/README.md) |
-| Cover | http://localhost:3102 | http://localhost:5172 | [Cover README](cover/README.md) |
-| Walkthrough | http://localhost:3103 | http://localhost:5173 | [Walkthrough README](walkthrough/README.md) |
-
-Each project is its own Git repository, with independent commits and CI:
-
-- [Jeremiah-Sakuda/harambee](https://github.com/Jeremiah-Sakuda/harambee)
-- [Jeremiah-Sakuda/cover](https://github.com/Jeremiah-Sakuda/cover)
-- [Jeremiah-Sakuda/walkthrough](https://github.com/Jeremiah-Sakuda/walkthrough)
-
-These repositories were created private. The hackathon's public-repository release requirement remains a separate submission step.
-
-Run just one project with `node scripts/suite.mjs dev harambee`, or use npm directly inside its folder. Apps use separate ports, dependencies, and local state. No root dependency installation is needed. The source is under the [MIT license](LICENSE).
-
-The default local profiles use synthetic fixtures and simulated payments. They do not move money. AI fallbacks must identify themselves; live provider calls require server-side configuration described in each project README. Demo role selection is for exercising workflows and is not production authentication. Do not expose these local demos publicly without addressing each app's release gates.
+Planning reference retained from the project suite. Current Cover implementation, setup commands, and limitations are in [README.md](README.md). These requirements and validation targets are not claims that the corresponding evidence has been produced.
 
 ## Original proposal context
 
@@ -52,11 +16,11 @@ Harambee is the recommended first project because it has the clearest path to a 
 
 ## Competition objective
 
-The goal for the selected project is to win first place overall in the PayPal AI Hackathon. Each subfolder includes the official judging criteria and a project-specific evidence plan:
+The goal for the selected project is to win first place overall in the PayPal AI Hackathon. Each separate project includes the official judging criteria and a project-specific evidence plan:
 
-- [Harambee goal and judging criteria](harambee/HACKATHON.md)
-- [Cover goal and judging criteria](cover/HACKATHON.md)
-- [Walkthrough goal and judging criteria](walkthrough/HACKATHON.md)
+- [Harambee goal and judging criteria](https://github.com/Jeremiah-Sakuda/harambee/blob/main/HACKATHON.md)
+- [Cover goal and judging criteria](HACKATHON.md)
+- [Walkthrough goal and judging criteria](https://github.com/Jeremiah-Sakuda/walkthrough/blob/main/HACKATHON.md)
 
 ## Shared delivery requirements
 
