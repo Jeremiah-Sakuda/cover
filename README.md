@@ -23,7 +23,7 @@ npm start
 
 `npm start` serves the built app and API together at [localhost:3102](http://127.0.0.1:3102). Run one backend at a time. Development uses React + Vite, with a Node HTTP API and atomic JSON persistence. Fonts use Google Fonts with local fallbacks.
 
-State persists in `data/cover-demo.json`. Stop the server and delete that file to return to three synthetic seeded proposals. No application data or secrets belong in Git. The server binds to loopback. Do not expose this demo to the public internet; demo roles are selectable, not authenticated identities.
+State persists in `data/cover-demo.json`. Use **Payments & receipts → Operator → Reset demonstration** and confirm to return to three synthetic seeded proposals. Alternatively, stop the server and delete that file. No application data or secrets belong in Git. The server binds to loopback. Do not expose this demo to the public internet; demo roles are selectable, not authenticated identities.
 
 ## A three-minute demonstration
 
@@ -75,6 +75,7 @@ The browser sender workflow is the working integration. `GET /api/policy` is pub
 | `POST /api/submissions/:id/appeal` | Sender | Appeal a captured review within 48 hours |
 | `POST /api/submissions/:id/refund` | Operator | Reasoned refund of a confirmed capture |
 | `POST /api/submissions/:id/reconcile` | Operator | Check an unknown operation with original request ID |
+| `POST /api/demo/reset` | Operator, demo only | Requires `{"confirmation":"RESET DEMO"}`; restores synthetic fixtures |
 | `POST /api/demo/advance` | Operator, demo only | Advance 1–72 application hours |
 
 A single serialized mutation queue covers capacity, budget, review and expiry. Exact policy terms are copied into each submission. Duplicate content and reused keys with changed payloads are rejected. Amounts are integer cents. Request size and per-IP rate bounds are enforced. API role checks prohibit recipient refunds and sender capture.

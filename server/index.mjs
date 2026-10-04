@@ -37,6 +37,7 @@ const server=http.createServer(async(req,res)=>{
    else if(route==='/api/mandate'){requireRole('sender');result=await store.consent(input)}
    else if(route==='/api/mandate/revoke'){requireRole('sender');result=await store.revoke()}
    else if(route==='/api/submissions'){requireRole('sender');result=await store.submit(input,req.headers['idempotency-key'])}
+   else if(route==='/api/demo/reset'){requireRole('operator');result=await store.reset(input.confirmation)}
    else if(route==='/api/demo/advance'){requireRole('operator');result=await store.advance(input.hours)}
    else {
     const m=route.match(/^\/api\/submissions\/([^/]+)\/(open|review|appeal|refund|reconcile|confirm)$/);if(!m)return json(res,404,{error:'Unknown API route'});const [,id,action]=m;
