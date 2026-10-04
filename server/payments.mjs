@@ -21,10 +21,19 @@ export function paymentProvider(mode='demo'){
  },
  async lookup(s,op){
   if(mode==='demo')return {status:'COMPLETED',id:op.providerId||'SIM-RECONCILED-'+op.id};
-  if(op.action==='void'){const a=await request(`/v2/payments/authorizations/${s.payment.authorizationId}`);return {id:a.id,status:a.status==='VOIDED'?'COMPLETED':a.status}}
+  if(op.action==='void'){
+   const a=await request(`/v2/payments/authorizations/${s.payment.authorizationId}`);
+   if(['VOIDED','EXPIRED'].includes(a.status))return {id:a.id,status:'COMPLETED'};
+   if(a.status==='CREATED'){
+    // A read proves the hold is still open. Replay only the original void intent.
+    if(Date.now()-op.createdAt>5*3600000)return {id:a.id,status:'INVESTIGATION_REQUIRED'};
+    return this.settle(s,'void',op.id);
+   }
+   return {id:a.id,status:['CAPTURED','PARTIALLY_CAPTURED'].includes(a.status)?'INVESTIGATION_REQUIRED':a.status};
+  }
   if(op.providerId)return request(`/v2/payments/${op.action==='refund'?'refunds':'captures'}/${op.providerId}`);
   // PayPal keys have finite retention; an old unknown operation needs provider investigation.
-  if(Date.now()-op.createdAt>5*3600000)throw Error('Provider idempotency retention cannot be assumed; investigate this operation manually.');
+  if(Date.now()-op.createdAt>5*3600000)return {status:'INVESTIGATION_REQUIRED'};
   // Repeat the exact idempotent request, never manufacture a new key after an unknown outcome.
   return this.settle(s,op.action,op.id);
  }};

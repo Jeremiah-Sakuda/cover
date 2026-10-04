@@ -6,9 +6,23 @@ export function validateDraft(d){
  return Object.fromEntries(['company','title','body','pricing','evidence','category'].map(k=>[k,d[k].trim()]));
 }
 export function localAssessment(d){
- const text=d.body;const excluded=/lead lists?|seo services?|crypto promotions?/i.exec(text);const hit=/finance|customer feedback|developer|research|invoice|workflow|reconciliation/i.exec(text);
+ const text=d.body;
+ const exclusions=[...text.matchAll(/lead lists?|seo services?|crypto promotions?/gi)];
+ const excluded=exclusions.find(m=>{
+  const clause=text.slice(Math.max(0,m.index-100),m.index).split(/[.!?;]|\bbut\b|\bhowever\b/i).at(-1);
+  return !/\b(?:not|never|no|don't|do not|without|avoid|reject|excluding)\b[^.!?;]{0,65}$/i.test(clause);
+ });
+ // Intentionally conservative: a department name or generic “workflow” is insufficient.
+ const hit=/invoice reconciliation|reconcile (?:your |our |the )?invoices|automat(?:e|es|ing) (?:manual )?finance|reduce manual finance work|(?:analy[sz](?:e|es|ing)|organize|organizes|turn|turns) customer feedback|customer feedback (?:into|analysis)|customer interviews|developer (?:tools|workflows)|(?:improve|accelerate|automate) (?:your |our |the )?(?:build|deployment|test) (?:pipeline|workflow)|developer.*debug/i.exec(text);
  const decision=excluded?'skip':hit?'submit':'revise';const match=excluded||hit;
- return {decision,label:decision==='skip'?'Outside the brief':decision==='submit'?'Promising fit':'Needs a closer look',summary:decision==='skip'?'An excluded service appears in the proposal. Revise before committing a review fee.':decision==='submit'?'The proposal names a current need. Its claims still require a human review.':'The connection to a current need is unclear. Add a specific use case.',evidence:match?[{quote:text.slice(Math.max(0,match.index-25),Math.min(text.length,match.index+match[0].length+65)),rule:excluded?'P3':'P1'}]:[],unverified:['Vendor claims and linked evidence have not been independently verified.'],provider:'Local rules · demo',model:'cover-rules-v1',latencyMs:0};
+ let evidence=[];
+ if(match){
+  let start=Math.max(0,match.index-65),end=Math.min(text.length,match.index+match[0].length+100);
+  while(start>0&&start<match.index&&!/\s/.test(text[start-1]))start++;
+  while(end<text.length&&!/\s/.test(text[end]))end++;
+  evidence=[{quote:text.slice(start,end).trim(),rule:excluded?'P3':'P1',truncatedBefore:start>0,truncatedAfter:end<text.length}];
+ }
+ return {decision,label:decision==='skip'?'Outside the brief':decision==='submit'?'Promising fit':'Needs a closer look',summary:decision==='skip'?'An offered excluded service appears in the proposal. Check the context before committing a review fee.':decision==='submit'?'A specific use case may address a current need. A human must still check relevance and evidence.':'A specific connection to a current need is unclear. Add a concrete use case; a department name alone is insufficient.',evidence,unverified:['Vendor claims and linked evidence have not been independently verified.'],provider:'Local rules · demo',model:'cover-rules-v2',latencyMs:0};
 }
 export async function assess(d){
  const fallback=localAssessment(d);if(!process.env.GEMINI_API_KEY||!process.env.GEMINI_MODEL)return fallback;
