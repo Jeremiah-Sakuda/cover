@@ -10,6 +10,7 @@ export function localAssessment(d){
  const exclusions=[...text.matchAll(/lead lists?|seo services?|crypto promotions?/gi)];
  const excluded=exclusions.find(m=>{
   const clause=text.slice(Math.max(0,m.index-100),m.index).split(/[.!?;]|\bbut\b|\bhowever\b/i).at(-1);
+  if(/\bnot (?:only|just)\b/i.test(clause))return true;
   return !/\b(?:not|never|no|don't|do not|without|avoid|reject|excluding)\b[^.!?;]{0,65}$/i.test(clause);
  });
  // Intentionally conservative: a department name or generic “workflow” is insufficient.
