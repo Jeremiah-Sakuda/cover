@@ -9,7 +9,7 @@ const active=s=>['AUTHORIZED','AWAITING_APPROVAL','AUTHORIZATION_UNKNOWN','CAPTU
 export function createStore({file,mode='demo',clock=()=>Date.now(),provider=paymentProvider(mode),seed=true}={}){
  const now=()=>clock()+state.offset;
  let state={version:1,mode,offset:0,mandate:{consented:false,revoked:false,dailyBudget:2500,maxOutstanding:2000,perSubmission:500,recipientId:policy.id},submissions:[],operations:[],events:[]};
- if(file&&fs.existsSync(file)){state=JSON.parse(fs.readFileSync(file,'utf8'));if(state.mode!==mode)throw Error('State/payment mode mismatch');}
+ if(file&&fs.existsSync(file)){state=JSON.parse(fs.readFileSync(file,'utf8'));if(state.mode!==mode)throw Error('State/payment mode mismatch');for(const s of state.submissions)if(s.status==='CANCELLED'&&s.payment.orderId)s.status='CHECKOUT_EXPIRED';}
  else if(seed&&mode==='demo'){
  const samples=[{company:'Folio',title:'Your finance close, without the busywork',category:'Finance operations',body:'We help small teams automate invoice reconciliation and reduce manual finance work. Folio connects existing accounting exports and flags mismatches for your team to review. Our pilot measured a 35% reduction in review time. I would love your feedback on whether this fits Canopy.',pricing:'$49 per month, 14-day trial',evidence:'https://example.com/folio-case-study'},{company:'Signal Studio',title:'Turn customer interviews into a clear next step',category:'Customer research',body:'Our research workspace helps founders turn customer feedback into a ranked list of product decisions. Every theme links back to an interview quote. We have a short example showing how a five-person team organized twenty interviews.',pricing:'$29 per month',evidence:'https://example.com/signal-demo'},{company:'Orbit',title:'A new way to find your next hundred customers',category:'Customer research',body:'Orbit offers lead lists and outbound campaigns for teams expanding into new markets. We supply 100 targeted contacts and a launch plan. Our team would appreciate a review of our positioning even if this is outside your current priorities.',pricing:'$199 per campaign',evidence:'https://example.com/orbit'}];
  state.submissions=samples.map((d,i)=>({id:randomUUID(),...d,policy:structuredClone(policy),assessment:localAssessment(d),createdAt:clock()-(i+1)*3600000,deadline:clock()+(22-i)*3600000,status:'AUTHORIZED',senderId:'demo-sender',fingerprint:hash(d),payment:{authorizationId:`SIM-FIXTURE-${i+1}`,status:'AUTHORIZED'},events:[{at:clock()-(i+1)*3600000,label:'Fixture authorization · simulated'}]}));
@@ -35,7 +35,7 @@ export function createStore({file,mode='demo',clock=()=>Date.now(),provider=paym
  }
  op.status='CONFIRMED';op.confirmedAt=now();s.status={capture:'CAPTURED',void:'VOIDED',refund:'REFUNDED'}[op.action];s.payment.status=s.status;
  if(op.action==='capture'){s.payment.captureId=res.id;s.earning={amount:s.policy.recipientShare,status:'PENDING_APPEAL_WINDOW',eligibleAt:now()+s.policy.appealHours*3600000};}
- if(op.action==='refund'){if(s.earning)s.earning.status='REVERSED';if(s.appeal){s.appeal.status='REFUNDED';s.appeal.resolvedAt=now()}}
+ if(op.action==='refund'){s.payment.refundId=res.id;if(s.earning)s.earning.status='REVERSED';if(s.appeal){s.appeal.status='REFUNDED';s.appeal.resolvedAt=now()}}
  event(s,`${mode==='demo'?'Simulated ':''}${op.action} confirmed`);
  }
  async function recoverFailure(s,op){if(op.action==='capture'&&op.status==='FAILED')await settle(s,'void')}

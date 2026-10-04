@@ -1,8 +1,8 @@
 # Cover
 
-[Browser verification and preview](docs/BROWSER_QA.md)
+[Browser verification and preview](docs/BROWSER_QA.md) · [Panel remediation](docs/REMEDIATION.md) · [Measured local evaluation](docs/evals/README.md)
 
-**Good proposals deserve a considered response.** Cover is a working local hackathon MVP for agent-assisted vendor introductions. A sender consents to a $5 review fee, the server enforces their budget, and a recipient earns the fee only after completing a structured human review. No review by the deadline means release of the authorization.
+**Good proposals deserve a considered response.** Cover is a working local hackathon MVP for agent-assisted vendor introductions. A sender consents to a $5 review fee, the server enforces their budget, and a recipient earns the fee only after completing a structured human review. No review by the deadline triggers authorization release; the receipt distinguishes confirmed release from unresolved provider outcomes.
 
 The default experience is fully simulated and requires no credentials. Optional Gemini assessment and genuine PayPal **sandbox** checkout adapters are connected to the application, but have **not been exercised with real credentials**. This is not yet a submission-ready proof of PayPal integration or validated demand.
 
@@ -32,7 +32,7 @@ State persists in `data/cover-demo.json`. Use **Payments & receipts → Operator
 1. Open **Your review policy**: $5, 24 hours, published criteria, explicit review definition, waiver, no guaranteed meeting, and appeal route.
 2. Open **Sender agent**, switch to Sender, set budgets, accept and enable the mandate. Check a draft's fit. Try text offering “lead lists” to see a skip recommendation before payment. The default rules engine is clearly labeled; configure Gemini for model-backed assessments.
 3. Accept the exact fee and submit. In demo mode, the hold is simulated. In sandbox mode, open the supplied PayPal approval link, approve with a sandbox buyer, then press **Check authorization**. Only server-confirmed authorizations can be reviewed.
-4. Switch to Recipient, open a full proposal, quote an exact passage, give a content-specific reason, confirm reading, and choose **Review & charge** or **Review & waive**. Disposition never determines the fee.
+4. Switch to Recipient, open a full proposal, choose a policy rule, quote an exact passage (20+ characters), give a content-specific reason (40+ characters) and concrete next step (12+ characters), confirm reading, and choose **Review & charge** or **Review & waive**. Disposition never determines the fee.
 5. Open **Payments & receipts**. Switch to Operator and advance the simulation by 25 hours. Unreviewed holds become released. This changes only the application clock, not PayPal settlement.
 6. For a captured review, switch to Sender and appeal in its receipt. Switch to Operator, give an independent reason, and refund. The earning is put on hold, then reversed when refund confirmation arrives.
 
@@ -46,7 +46,7 @@ Set `PAYMENT_MODE=paypal-sandbox`, `PAYPAL_CLIENT_ID`, and `PAYPAL_CLIENT_SECRET
 
 Sandbox uses a separate empty state file. The server creates Orders v2 `AUTHORIZE` orders, obtains buyer approval, confirms authorization server-side, and uses Payments v2 for capture, void, and refund. It never uses the live API host. Approval redirects alone cannot confirm payment. Saved payment methods and unattended charges are not implemented; each proposal requires buyer approval.
 
-Financial requests are recorded before dispatch and use stable request IDs. Unknown results retain their reserved exposure and require operator reconciliation. Confirmed provider results determine the visible state. A capture in progress is never blindly voided at expiry. Unknown operations older than five hours with no provider ID require manual provider investigation rather than assuming PayPal still retains an idempotency key. The application polls deadlines while running and processes overdue items on reads/restart. Late checkout authorization is voided rather than admitted.
+Financial requests are recorded before dispatch and use stable request IDs. Unknown results retain their reserved exposure and require operator reconciliation. Confirmed provider results determine the visible state. A capture in progress is never blindly voided at expiry. Unknown operations older than five hours with no provider ID require manual provider investigation rather than assuming PayPal still retains an idempotency key. The application polls deadlines while running and processes overdue items on reads/restart. Late checkout authorization is voided rather than admitted. The sender and operator can check expired checkout orders, and a throttled worker retries late confirmation. Expired unresolved checkouts retain exposure. Known failed captures trigger release; failed refunds show an investigation state without inventing a new refund. See [the state table](docs/SETTLEMENT_RECOVERY.md).
 
 No webhooks are accepted. Reconciliation uses authenticated server-side API calls. No payouts are implemented; $3 recipient earnings are an internal, pending ledger allocation. No earnings are claimed as received. Multi-merchant settlement, payout eligibility, provider failures, dispute workflows and actual sandbox lifecycle behavior remain release gates.
 
@@ -73,7 +73,7 @@ The browser sender workflow is the working integration. `GET /api/policy` is pub
 | `POST /api/submissions` | Sender | Requires `Idempotency-Key`, exact accepted policy/fee, consent |
 | `POST /api/submissions/:id/confirm` | Sender | Confirm PayPal authorization through server API |
 | `POST /api/submissions/:id/open` | Recipient | Record opening the full proposal |
-| `POST /api/submissions/:id/review` | Recipient | Quote, reason, disposition, read confirmation, fee action |
+| `POST /api/submissions/:id/review` | Recipient | Policy criterion, quote, reason, nextStep, disposition, read confirmation, fee action |
 | `POST /api/submissions/:id/appeal` | Sender | Appeal a captured review within 48 hours |
 | `POST /api/submissions/:id/refund` | Operator | Reasoned refund of a confirmed capture |
 | `POST /api/submissions/:id/reconcile` | Operator | Check an unknown operation with original request ID |
@@ -86,6 +86,14 @@ A single serialized mutation queue covers capacity, budget, review and expiry. E
 
 `npm test` exercises consent/revocation, concurrent budgets, idempotency, mandatory review evidence, explicit capture consent, waiver, expiry races, unknown capture reconciliation, appeals/refunds, persistence, prompt-injection-like text, unsafe evidence URL schemes, and simulation-only time controls. `npm run build` produces the production bundle. GitHub Actions runs tests and build on each push/PR.
 
-Current release is **a single-process local demonstration**. JSON persistence is atomic but not a multi-process transactional database. Local role switching does not establish identity, privacy boundaries between multiple senders, or independent operator staffing. All state is synthetic; 30-day message retention and financial retention policies are documented requirements but not an automated deletion implementation. Webhook delivery, email notifications, payouts, production identity, migrations, distributed locking, AI evaluations and customer interviews are not complete. No production payments or customer data should be accepted.
+Current release is **a single-process local demonstration**. JSON persistence is atomic but not a multi-process transactional database. Local role switching does not establish identity, privacy boundaries between multiple senders, or independent operator staffing. All state is synthetic; 30-day message retention and financial retention policies are documented requirements but not an automated deletion implementation. Webhook delivery, email notifications, payouts, production identity, migrations, distributed locking, live-model evaluation and customer interviews are not complete. The local synthetic assessment evaluation is complete and reported separately. No production payments or customer data should be accepted.
 
 See [PRD.md](PRD.md), [HACKATHON.md](HACKATHON.md), and [SHARED_REQUIREMENTS.md](SHARED_REQUIREMENTS.md) for original goals and outstanding evidence gates. The October 3 PRD's proposal status describes the planning baseline, not this implementation's current state. MIT licensed.
+
+## Review quality and measured limits
+
+The review form now provides focused inline correction guidance, an exact-quote receipt, a selected policy rule and a concrete next step. These are structural checks, not proof of attention. A generic rejection is insufficient; copied vocabulary can still pass without delivering value. Use the [manual operator rubric and pilot protocol](docs/REVIEW_QUALITY_PILOT.md) to assess actual usefulness. Sender usefulness and demand have not been measured.
+
+`npm run eval` compares the frozen original rules and improved rules on 24 developer-authored synthetic cases. The local scores are 14/24 and 22/24; the two remaining semantic failures are retained. This is not independently labeled ground truth and does not establish Gemini accuracy. [Results and commands](docs/evals/README.md) distinguish future connected comparisons from local execution. No model decides whether to move money; a human approves every submission and review fee.
+
+Provider credentials will be configured separately. The [provider evidence runbook](docs/PROVIDER_EVIDENCE.md) lists the exact lifecycle and model records still required. Real sandbox execution, customer validation and public submission publication remain unverified.

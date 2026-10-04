@@ -1,0 +1,15 @@
+# Review quality and pilot protocol
+
+Cover sells a defined human response, not a positive verdict. Software cannot prove attention or usefulness. The current server requires a published policy rule, an exact passage of at least 20 characters, a 40–1500 character reason that mentions a substantive term from that passage, a 12–600 character next step, a read confirmation, and explicit consent when charging. These checks reject the panel's short-quote/generic-thank-you reproduction. They remain structural heuristics; copying words can satisfy them without producing a useful response.
+
+An adequate example for “invoice reconciliation” is: “Your invoice reconciliation flow duplicates the matching step in our current accounting tool, so switching would not remove an additional task.” Next step: “Show how exception review differs from the accounting tool we already use.” A generic “Thank you, this is not right for us” is inadequate even if the recipient sincerely read the proposal. An unfavorable verdict alone is never refund grounds.
+
+For an independent operator audit, score each dimension 0 (absent), 1 (partial), 2 (specific): accurate quote/context, connection to the selected rule, rationale grounded in the proposal, and actionable next step or concrete condition that would change the answer. Have a second operator independently score the response, then record disagreement and resolution. Never use this manual rubric or an AI recommendation as an automatic payment decision. Keep the sender's appeal reason, the operator's reason and actual provider result separate.
+
+## Unexecuted pilot
+
+Recruit two willing founders and a small set of willing vendors via founder-led invitations. This is a proposed acquisition experiment, not claimed traction. Explain the exact fee, time window, no-meeting guarantee, synthetic versus real payments, and voluntary participation before any activity. First conduct unaided tasks with simulated money; ask participants to explain when payment occurs and where to appeal. Include declined invitations and negative feedback.
+
+For each consented trial, record pseudonymous participant ID, role, invite outcome and reason, proposal ID, consent comprehension, review duration, rubric scores from two operators, sender usefulness rating (1–5), whether the sender would pay $5 after seeing the response, appeal occurrence, operator minutes, and unexpected confusion. Do not fabricate observations or put personal messages in a public repository. Report count, range and disagreements rather than a cherry-picked quotation.
+
+The $5 fee / $3 recipient / $2 gross platform allocation is a fixture. A recipient spending 9 minutes per review would gross $20/hour before any costs; this is arithmetic under an assumption, not measured compensation. Record actual payment fees, model usage/costs, review time, support time and refunds separately before estimating net economics. No payouts exist in this build and no net profitability, demand or successful acquisition has been validated.
