@@ -1,0 +1,15 @@
+{
+  "project": "Cover",
+  "commit": "138276ab3867090b1b3772ba0e7d00062b510844",
+  "judge": "design",
+  "scores": {
+    "technology": 6,
+    "design": 7,
+    "impact": 5.5,
+    "innovation": 6.5,
+    "presentation": 5.5
+  },
+  "total": 61,
+  "readiness": "conditional",
+  "confidence": "medium"
+}
