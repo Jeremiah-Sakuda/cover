@@ -23,6 +23,8 @@ export function paymentProvider(mode='demo'){
   if(mode==='demo')return {status:'COMPLETED',id:op.providerId||'SIM-RECONCILED-'+op.id};
   if(op.action==='void'){const a=await request(`/v2/payments/authorizations/${s.payment.authorizationId}`);return {id:a.id,status:a.status==='VOIDED'?'COMPLETED':a.status}}
   if(op.providerId)return request(`/v2/payments/${op.action==='refund'?'refunds':'captures'}/${op.providerId}`);
+  // PayPal keys have finite retention; an old unknown operation needs provider investigation.
+  if(Date.now()-op.createdAt>5*3600000)throw Error('Provider idempotency retention cannot be assumed; investigate this operation manually.');
   // Repeat the exact idempotent request, never manufacture a new key after an unknown outcome.
   return this.settle(s,op.action,op.id);
  }};

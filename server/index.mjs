@@ -20,6 +20,8 @@ const server=http.createServer(async(req,res)=>{
  if(route==='/api/policy')return json(res,200,policy);
  if(route.startsWith('/api/')){
   const address=req.socket.remoteAddress;const entry=rates.get(address)||{start:Date.now(),count:0};if(Date.now()-entry.start>60000){entry.start=Date.now();entry.count=0}entry.count++;rates.set(address,entry);if(entry.count>180)return json(res,429,{error:'Too many requests. Try again in a minute.'});
+  if(req.method!=='GET'&&req.headers.origin&&!new Set([process.env.APP_URL||'http://127.0.0.1:5172',`http://127.0.0.1:${port}`,`http://localhost:${port}`,'http://localhost:5172']).has(req.headers.origin))return json(res,403,{error:'Same-origin requests only.'});
+  if(req.method!=='GET'&&!req.headers['content-type']?.startsWith('application/json'))return json(res,415,{error:'JSON content type required.'});
   if(req.method!=='GET'&&req.headers['x-cover-client']!=='web')return json(res,403,{error:'Cover client header required.'});
   if(req.method==='POST'&&route==='/api/session'){
    const {role}=await body(req);if(!['sender','recipient','operator'].includes(role))return json(res,400,{error:'Unknown demo role'});

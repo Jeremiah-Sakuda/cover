@@ -1,6 +1,6 @@
 # Cover product requirements
 
-**Version:** 0.1. **Date:** October 3, 2026. **Status:** Proposed MVP; no implementation or validation. See the [proposal index](../README.md) for shared requirements, timeline, and payment sources.
+**Version:** 0.1. **Date:** October 3, 2026. **Status:** Proposed MVP; no implementation or validation. See the [proposal index](SHARED_REQUIREMENTS.md) for shared requirements, timeline, and payment sources.
 
 Cover gives founders a dedicated channel for agent-submitted vendor proposals. Senders agree to a disclosed review fee, their agent checks the recipient's published criteria, and a hold is created before admission. A human recipient must complete a structured review before a fee can be captured. Unreviewed submissions expire without a charge.
 
