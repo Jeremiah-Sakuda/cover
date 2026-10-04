@@ -1,5 +1,7 @@
 # Cover
 
+[Browser verification and preview](docs/BROWSER_QA.md)
+
 **Good proposals deserve a considered response.** Cover is a working local hackathon MVP for agent-assisted vendor introductions. A sender consents to a $5 review fee, the server enforces their budget, and a recipient earns the fee only after completing a structured human review. No review by the deadline means release of the authorization.
 
 The default experience is fully simulated and requires no credentials. Optional Gemini assessment and genuine PayPal **sandbox** checkout adapters are connected to the application, but have **not been exercised with real credentials**. This is not yet a submission-ready proof of PayPal integration or validated demand.
