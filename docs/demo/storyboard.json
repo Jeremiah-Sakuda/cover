@@ -1,0 +1,37 @@
+{
+  "project": "Cover",
+  "sourceCommit": "a40f89b",
+  "provenance": "All six screenshots were captured by the coordinator while operating the isolated application at a40f89b. Later implementation 3a76966 adds refund/provider operation IDs to activity receipts and legacy expired-checkout migration; those later additions are not demonstrated in these captures.",
+  "scenes": [
+    {
+      "title": "A bounded review, not a promised sale",
+      "image": "frames/01-inbox.png",
+      "narration": "Cover helps vendors purchase a defined human review from a founder. A five dollar hold reserves a twenty four hour response window. Payment depends on completing the review, never on a positive verdict. This preview uses actual local interface captures edited into a narrated walkthrough. The companies and payments are simulated; this is not a continuous screen recording or live PayPal evidence."
+    },
+    {
+      "title": "Spending consent comes first",
+      "image": "frames/02-prerequisite.png",
+      "narration": "On a small phone, the fee agreement explains the service and its limits. The payment action stays disabled until the sender enables spending limits. The Set spending limits control moves focus directly to that prerequisite. The sender then approves both a bounded mandate and the exact fee for this proposal. No meeting, purchase, or favorable response is guaranteed."
+    },
+    {
+      "title": "Advice stays separate from financial authority",
+      "image": "frames/03-assessment.png",
+      "narration": "Acorn proposes invoice reconciliation. The local rules identify a relevant use case and quote its source. The visible provider label says local rules, not Gemini. Claims and external evidence remain unverified. A human chooses whether to submit; the assessment cannot authorize money. The frozen synthetic comparison is documented separately, and a genuine Gemini comparison still requires credentials."
+    },
+    {
+      "title": "A review must include concrete reasoning",
+      "image": "frames/04-mobile-validation.png",
+      "narration": "The recipient opens the complete proposal. Attempting to charge with an empty review moves focus to this visible error summary. The form requires an exact passage, a published rule, specific reasoning, a concrete next step, and explicit confirmations. These checks reject the earlier generic response example. They record structured actions, but cannot prove attention or guarantee usefulness."
+    },
+    {
+      "title": "The receipt preserves the service delivered",
+      "image": "frames/05-receipt.png",
+      "narration": "After the recipient completes those fields and consents to charging, the simulated five dollar capture appears in the receipt. The sender can see the exact quoted passage, policy rule, explanation, and next step. Here the response asks for a worked reconciliation example. A negative verdict could also satisfy the same review contract; the recipient can choose to waive the fee."
+    },
+    {
+      "title": "An appeal has a visible outcome",
+      "image": "frames/06-refund.png",
+      "narration": "The sender appeals, and the demo operator records a reason before refunding. Both the receipt and appeal now say refunded, and the operator explanation remains visible. Local role switching does not prove independent staffing. No payouts are connected. The code and recovery tests are implemented; real sandbox transactions, model execution, participant validation, and a public submission video remain separate evidence gates."
+    }
+  ]
+}

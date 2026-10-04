@@ -1,6 +1,6 @@
 # Cover
 
-[Browser verification and preview](docs/BROWSER_QA.md) · [Panel remediation](docs/REMEDIATION.md) · [Measured local evaluation](docs/evals/README.md)
+[Round-two browser verification](docs/ROUND2_QA.md) · [Narrated local demo preview](docs/demo/README.md) · [Panel remediation](docs/REMEDIATION.md) · [Measured local evaluation](docs/evals/README.md)
 
 **Good proposals deserve a considered response.** Cover is a working local hackathon MVP for agent-assisted vendor introductions. A sender consents to a $5 review fee, the server enforces their budget, and a recipient earns the fee only after completing a structured human review. No review by the deadline triggers authorization release; the receipt distinguishes confirmed release from unresolved provider outcomes.
 
@@ -96,4 +96,4 @@ The review form now provides focused inline correction guidance, an exact-quote 
 
 `npm run eval` compares the frozen original rules and improved rules on 24 developer-authored synthetic cases. The local scores are 14/24 and 22/24; the two remaining semantic failures are retained. This is not independently labeled ground truth and does not establish Gemini accuracy. [Results and commands](docs/evals/README.md) distinguish future connected comparisons from local execution. No model decides whether to move money; a human approves every submission and review fee.
 
-Provider credentials will be configured separately. The [provider evidence runbook](docs/PROVIDER_EVIDENCE.md) lists the exact lifecycle and model records still required. Real sandbox execution, customer validation and public submission publication remain unverified.
+Provider credentials will be configured separately. The [provider evidence runbook](docs/PROVIDER_EVIDENCE.md) lists the exact lifecycle and model records still required. Real sandbox execution, customer validation and public YouTube video publication remain unverified. The repository is public following explicit user approval and a coordinator-verified Git history secret scan. The narrated preview is a local edited walkthrough, not a public video submission.

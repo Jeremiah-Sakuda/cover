@@ -1,0 +1,10 @@
+{
+  "project": "Cover",
+  "sourceCommit": "a40f89b",
+  "captureMethod": "Actual UI screenshots assembled as an edited narrated walkthrough",
+  "simulation": true,
+  "providerVerified": false,
+  "durationSeconds": 145.345996,
+  "sceneCount": 6,
+  "publicUrl": null
+}

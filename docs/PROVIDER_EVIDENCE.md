@@ -13,4 +13,4 @@ When credentials are ready, use a separate sandbox state file and synthetic prop
 
 Evidence records should include application commit, timestamp, environment, scenario, operation/request ID, sanitized provider ID, observed provider response status, final local state and explicit verification method. Never include access tokens, credentials, buyer personal information or full sensitive provider responses. Tests using fixture IDs do not satisfy these provider evidence gates.
 
-Public source visibility and public video publication remain separate submission gates. A local edited demonstration preview is useful presentation material but does not establish a public YouTube submission or real provider operation.
+The repository is public after explicit user approval and a coordinator-verified Git history secret scan. Public video publication remains a separate submission gate. A local edited demonstration preview is useful presentation material but does not establish a public YouTube submission or real provider operation.
